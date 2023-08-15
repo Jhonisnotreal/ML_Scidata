@@ -42,4 +42,18 @@ modelo.predict(var_independientes)
 tabla["predicciones"] = modelo.predict(var_independientes)
 
 
+# Calculo de errores
+metrics.mean_absolute_error(tabla['valor_real'], tabla['predicciones']) #Error medio
+metrics.mean_squared_error(tabla['valor_real'], tabla['predicciones']) #Erorr cuadratico medio
+np.sqrt(metrics.mean_squared_error(tabla['valor_real'], tabla['predicciones']))
 
+tabla >> mutate(error = _.valor_real-_.predicciones)
+
+n = tabla.shape[0]
+k = var_independientes.shape[1]
+
+#Medimos la complejidad del algoritmo
+R2 = metrics.r2_score(tabla["valor_real"], tabla["predicciones"])
+
+1-(1-R2)*(n-1)/(n-k-1)
+# 1-(1-R2)*(50-1)/(50-1-1)
